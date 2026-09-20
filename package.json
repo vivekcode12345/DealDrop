@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
-    "@mendable/firecrawl-js": "^4.39.0",
+    "@mendable/firecrawl-js": "^4.41.0",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.116.0",
     "class-variance-authority": "^0.7.1",
