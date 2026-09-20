@@ -83,11 +83,15 @@ export default function ProductCard({ product }) {
             )}
           </Button>
 
-          <Button variant="outline" size="sm" asChild className="gap-1">
-            <Link href={product.url} target="_blank" rel="noopener noreferrer">
-              <ExternalLink className="w-4 h-4" />
-              View Product
-            </Link>
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-1"
+            nativeButton={false}
+            render={<Link href={product.url} target="_blank" rel="noopener noreferrer" />}
+          >
+            <ExternalLink className="w-4 h-4" />
+            View Product
           </Button>
 
           <Button
