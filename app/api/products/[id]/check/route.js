@@ -43,8 +43,6 @@ export async function POST(request, { params }) {
       );
     }
 
-    console.log("[check-route] product fetched:", JSON.stringify(product));
-
     if (!product) {
       return NextResponse.json(
         { error: "Product not found" },
