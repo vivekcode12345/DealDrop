@@ -3,7 +3,7 @@
 Keep track of the prices you care about — track a product's price and get an email when it drops.
 
 ---
-
+![DealDrop screenshot](./screenshot/homepage.png)
 ## Features
 
 - **Product Tracking by URL**: Paste any product URL to extract its title, current price, currency, and product image via Firecrawl v4.
