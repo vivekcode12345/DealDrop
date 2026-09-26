@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { INPUT_PLACEHOLDER } from "@/lib/content";
 
 export default function AddProductForm({ user }) {
   const [url, setUrl] = useState("");
@@ -46,7 +47,7 @@ export default function AddProductForm({ user }) {
             type="url"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            placeholder="Paste product URL (Amazon, Walmart, etc.)"
+            placeholder={INPUT_PLACEHOLDER}
             className="h-12 text-base"
             required
             disabled={loading}

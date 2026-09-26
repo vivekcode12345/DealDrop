@@ -3,6 +3,93 @@ import { createClient } from "@supabase/supabase-js";
 import { scrapeProduct } from "@/lib/firecrawl";
 import { sendPriceDropAlert } from "@/lib/email";
 
+export const maxDuration = 300;
+
+const CHUNK_SIZE = 3;
+
+// Scrapes a single product, updates it, records the price change and sends an
+// alert when the price drops. Mutates the shared `results` counters and
+// returns "updated" or "failed".
+async function processProduct(supabase, product, results) {
+  try {
+    const productData = await scrapeProduct(product.url);
+
+    if (!productData.currentPrice) {
+      results.failed++;
+      return "failed";
+    }
+
+    const newPrice = parseFloat(productData.currentPrice);
+    const oldPrice = parseFloat(product.current_price);
+
+    const { error: updateError } = await supabase
+      .from("products")
+      .update({
+        current_price: newPrice,
+        currency: productData.currencyCode || product.currency,
+        name: productData.productName || product.name,
+        image_url: productData.productImageUrl || product.image_url,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", product.id);
+
+    if (updateError) {
+      console.error(`Failed to update product ${product.id}:`, updateError);
+      results.failed++;
+      return "failed";
+    }
+
+    if (oldPrice !== newPrice) {
+      const { error: historyError } = await supabase
+        .from("price_history")
+        .insert({
+          product_id: product.id,
+          price: newPrice,
+          currency: productData.currencyCode || product.currency,
+        });
+
+      // If the history write fails, treat the product as failed and skip the
+      // email so we never notify on an unrecorded price change.
+      if (historyError) {
+        console.error(
+          `Failed to record price history for ${product.id}:`,
+          historyError
+        );
+        results.failed++;
+        return "failed";
+      }
+
+      results.priceChanges++;
+
+      if (newPrice < oldPrice) {
+        const {
+          data: { user },
+        } = await supabase.auth.admin.getUserById(product.user_id);
+
+        if (user?.email) {
+          const emailResult = await sendPriceDropAlert(
+            user.email,
+            product,
+            oldPrice,
+            newPrice
+          );
+
+          if (emailResult.success) {
+            results.alertsSent++;
+          }
+        }
+      }
+    }
+
+    results.updated++;
+    return "updated";
+  } catch (error) {
+    console.error(`Error processing product ${product.id}:`, error);
+    results.failed++;
+    return "failed";
+  }
+}
+
 export async function POST(request) {
   try {
     const authHeader = request.headers.get("authorization");
@@ -34,63 +121,11 @@ export async function POST(request) {
       alertsSent: 0,
     };
 
-    for (const product of products) {
-      try {
-        const productData = await scrapeProduct(product.url);
-
-        if (!productData.currentPrice) {
-          results.failed++;
-          continue;
-        }
-
-        const newPrice = parseFloat(productData.currentPrice);
-        const oldPrice = parseFloat(product.current_price);
-
-        await supabase
-          .from("products")
-          .update({
-            current_price: newPrice,
-            currency: productData.currencyCode || product.currency,
-            name: productData.productName || product.name,
-            image_url: productData.productImageUrl || product.image_url,
-            updated_at: new Date().toISOString(),
-          })
-          .eq("id", product.id);
-
-        if (oldPrice !== newPrice) {
-          await supabase.from("price_history").insert({
-            product_id: product.id,
-            price: newPrice,
-            currency: productData.currencyCode || product.currency,
-          });
-
-          results.priceChanges++;
-
-          if (newPrice < oldPrice) {
-            const {
-              data: { user },
-            } = await supabase.auth.admin.getUserById(product.user_id);
-
-            if (user?.email) {
-              const emailResult = await sendPriceDropAlert(
-                user.email,
-                product,
-                oldPrice,
-                newPrice
-              );
-
-              if (emailResult.success) {
-                results.alertsSent++;
-              }
-            }
-          }
-        }
-
-        results.updated++;
-      } catch (error) {
-        console.error(`Error processing product ${product.id}:`, error);
-        results.failed++;
-      }
+    for (let i = 0; i < products.length; i += CHUNK_SIZE) {
+      const chunk = products.slice(i, i + CHUNK_SIZE);
+      await Promise.allSettled(
+        chunk.map((product) => processProduct(supabase, product, results))
+      );
     }
 
     return NextResponse.json({
@@ -109,6 +144,3 @@ export async function GET() {
     message: "Price check endpoint is working. Use POST to trigger.",
   });
 }
-
-
-// curl -X POST https://get-deal-drop.vercel.app/api/cron/check-prices -H "Authorization: Bearer 09b43ebfe8f8bddba3f5c4f97c0e1ce27bfacac865251ff095ad54fc76540732"

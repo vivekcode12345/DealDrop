@@ -1,10 +1,10 @@
 import { Toaster } from "@/components/ui/sonner";
+import { SITE_NAME, HERO_SUBTITLE } from "@/lib/content";
 import "./globals.css";
 
 export const metadata = {
-  title: "Price Tracker - Never Miss a Price Drop",
-  description:
-    "Track product prices across e-commerce sites and get alerts on price drops",
+  title: `${SITE_NAME} - ${HERO_SUBTITLE}`,
+  description: HERO_SUBTITLE,
 };
 
 export default function RootLayout({ children }) {
