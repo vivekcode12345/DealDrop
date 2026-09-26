@@ -109,3 +109,6 @@ export async function GET() {
     message: "Price check endpoint is working. Use POST to trigger.",
   });
 }
+
+
+// curl -X POST https://get-deal-drop.vercel.app/api/cron/check-prices -H "Authorization: Bearer 09b43ebfe8f8bddba3f5c4f97c0e1ce27bfacac865251ff095ad54fc76540732"
