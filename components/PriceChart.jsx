@@ -38,8 +38,8 @@ export default function PriceChart({ productId }) {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-6 text-[#8B92A3] w-full text-xs">
-        <Loader2 className="w-4 h-4 animate-spin mr-2 text-[#E8A33D]" />
+      <div className="flex items-center justify-center py-6 text-[#6B7280] w-full text-xs">
+        <Loader2 className="w-4 h-4 animate-spin mr-2 text-[#B7791F]" />
         Loading price history...
       </div>
     );
@@ -47,7 +47,7 @@ export default function PriceChart({ productId }) {
 
   if (data.length === 0) {
     return (
-      <div className="text-center py-6 text-[#8B92A3] w-full text-xs">
+      <div className="text-center py-6 text-[#6B7280] w-full text-xs">
         No price history recorded yet. Daily updates will log new data points.
       </div>
     );
@@ -56,47 +56,48 @@ export default function PriceChart({ productId }) {
   return (
     <div className="w-full">
       <div className="flex items-center justify-between mb-3">
-        <h4 className="text-xs font-medium text-[#8B92A3]">
+        <h4 className="text-xs font-medium text-[#6B7280]">
           Recorded Price Trend
         </h4>
-        <span className="font-mono text-[11px] text-[#8B92A3]">
+        <span className="font-mono text-[11px] text-[#6B7280]">
           {data.length} check{data.length === 1 ? "" : "s"}
         </span>
       </div>
       <ResponsiveContainer width="100%" height={160}>
         <LineChart data={data} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#232937" vertical={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke="#E4E4E0" vertical={false} />
           <XAxis
             dataKey="date"
-            tick={{ fontSize: 11, fill: "#8B92A3", fontFamily: "var(--font-geist-mono)" }}
-            stroke="#232937"
+            tick={{ fontSize: 11, fill: "#6B7280", fontFamily: "var(--font-geist-mono)" }}
+            stroke="#E4E4E0"
             tickLine={false}
           />
           <YAxis
-            tick={{ fontSize: 11, fill: "#8B92A3", fontFamily: "var(--font-geist-mono)" }}
-            stroke="#232937"
+            tick={{ fontSize: 11, fill: "#6B7280", fontFamily: "var(--font-geist-mono)" }}
+            stroke="#E4E4E0"
             domain={["auto", "auto"]}
             tickLine={false}
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: "#12161F",
-              border: "1px solid #232937",
+              backgroundColor: "#FFFFFF",
+              border: "1px solid #E4E4E0",
               borderRadius: "4px",
               padding: "6px 10px",
               fontSize: "12px",
               fontFamily: "var(--font-geist-mono)",
-              color: "#F5F6F8",
+              color: "#14171F",
+              boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
             }}
-            labelStyle={{ color: "#8B92A3", fontSize: "11px", marginBottom: "2px" }}
+            labelStyle={{ color: "#6B7280", fontSize: "11px", marginBottom: "2px" }}
           />
           <Line
             type="monotone"
             dataKey="price"
-            stroke="#E8A33D"
+            stroke="#B7791F"
             strokeWidth={1.75}
-            dot={{ fill: "#E8A33D", r: 3 }}
-            activeDot={{ r: 5, fill: "#F5F6F8", stroke: "#E8A33D", strokeWidth: 2 }}
+            dot={{ fill: "#B7791F", r: 3 }}
+            activeDot={{ r: 5, fill: "#14171F", stroke: "#B7791F", strokeWidth: 2 }}
           />
         </LineChart>
       </ResponsiveContainer>

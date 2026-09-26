@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
       <body className="min-h-screen font-sans antialiased">
         {children}
 
-        <Toaster richColors theme="dark" />
+        <Toaster richColors theme="light" />
       </body>
     </html>
   );

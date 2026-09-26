@@ -26,12 +26,12 @@ export default function AuthModal({ isOpen, onClose }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-sm border-[#232937] bg-[#12161F] text-[#F5F6F8] rounded-sm p-6 shadow-2xl">
+      <DialogContent className="sm:max-w-sm border-[#E4E4E0] bg-[#FFFFFF] text-[#14171F] rounded-sm p-6 shadow-xl">
         <DialogHeader className="gap-1.5">
-          <DialogTitle className="text-base font-semibold text-[#F5F6F8]">
+          <DialogTitle className="text-base font-semibold text-[#14171F]">
             Sign in to DealDrop
           </DialogTitle>
-          <DialogDescription className="text-xs text-[#8B92A3]">
+          <DialogDescription className="text-xs text-[#6B7280]">
             Authenticate to store tracked items and receive price drop alerts.
           </DialogDescription>
         </DialogHeader>
@@ -40,7 +40,7 @@ export default function AuthModal({ isOpen, onClose }) {
           <Button
             onClick={handleGoogleLogin}
             variant="outline"
-            className="w-full gap-2.5 h-10 border-[#232937] bg-[#181E2A] text-[#F5F6F8] hover:bg-[#232937] hover:text-[#F5F6F8] rounded-md font-sans text-xs font-medium"
+            className="w-full gap-2.5 h-10 border-[#E4E4E0] bg-[#FAFAF9] text-[#14171F] hover:bg-[#F4F4F2] hover:text-[#14171F] rounded-md font-sans text-xs font-medium shadow-xs transition-colors"
           >
             <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
               <path

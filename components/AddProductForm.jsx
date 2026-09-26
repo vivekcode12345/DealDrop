@@ -48,7 +48,7 @@ export default function AddProductForm({ user }) {
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder={INPUT_PLACEHOLDER}
-            className="h-10 text-sm bg-[#12161F] border-[#232937] text-[#F5F6F8] placeholder:text-[#8B92A3] focus-visible:border-[#E8A33D] focus-visible:ring-[#E8A33D]/20 rounded-md"
+            className="h-10 text-sm bg-[#FFFFFF] border-[#E4E4E0] text-[#14171F] placeholder:text-[#6B7280] focus-visible:border-[#B7791F] focus-visible:ring-[#B7791F]/20 rounded-md shadow-xs"
             required
             disabled={loading}
           />
@@ -56,11 +56,11 @@ export default function AddProductForm({ user }) {
           <Button
             type="submit"
             disabled={loading}
-            className="bg-[#E8A33D] hover:bg-[#d49231] text-[#0A0E14] font-medium h-10 px-5 rounded-md shrink-0 transition-colors"
+            className="bg-[#B7791F] hover:bg-[#9f6919] text-[#14171F] font-semibold h-10 px-5 rounded-md shrink-0 transition-colors shadow-xs"
           >
             {loading ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin text-[#0A0E14]" />
+                <Loader2 className="mr-2 h-4 w-4 animate-spin text-[#14171F]" />
                 Adding...
               </>
             ) : (

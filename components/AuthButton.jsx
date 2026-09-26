@@ -16,9 +16,9 @@ export default function AuthButton({ user }) {
           variant="outline"
           size="sm"
           type="submit"
-          className="gap-1.5 h-8 text-xs border-[#232937] bg-[#12161F] text-[#8B92A3] hover:text-[#F5F6F8] hover:bg-[#181E2A] rounded-md font-sans"
+          className="gap-1.5 h-8 text-xs border-[#E4E4E0] bg-[#FFFFFF] text-[#14171F] hover:bg-[#F4F4F2] hover:text-[#14171F] rounded-md font-sans shadow-xs transition-colors"
         >
-          <LogOut className="w-3.5 h-3.5" />
+          <LogOut className="w-3.5 h-3.5 text-[#6B7280]" />
           Sign Out
         </Button>
       </form>
@@ -29,11 +29,11 @@ export default function AuthButton({ user }) {
     <>
       <Button
         onClick={() => setShowAuthModal(true)}
-        variant="default"
+        variant="outline"
         size="sm"
-        className="bg-[#E8A33D] hover:bg-[#d49231] text-[#0A0E14] font-medium h-8 text-xs px-3.5 gap-1.5 rounded-md"
+        className="gap-1.5 h-8 text-xs border-[#E4E4E0] bg-[#FFFFFF] text-[#14171F] hover:bg-[#F4F4F2] hover:text-[#14171F] px-3.5 rounded-md font-sans font-medium shadow-xs transition-colors"
       >
-        <LogIn className="w-3.5 h-3.5" />
+        <LogIn className="w-3.5 h-3.5 text-[#B7791F]" />
         Sign In
       </Button>
 
