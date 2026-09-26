@@ -12,8 +12,13 @@ export default function AuthButton({ user }) {
   if (user) {
     return (
       <form action={signOut}>
-        <Button variant="ghost" size="sm" type="submit" className="gap-2">
-          <LogOut className="w-4 h-4" />
+        <Button
+          variant="outline"
+          size="sm"
+          type="submit"
+          className="gap-1.5 h-8 text-xs border-[#232937] bg-[#12161F] text-[#8B92A3] hover:text-[#F5F6F8] hover:bg-[#181E2A] rounded-md font-sans"
+        >
+          <LogOut className="w-3.5 h-3.5" />
           Sign Out
         </Button>
       </form>
@@ -26,9 +31,9 @@ export default function AuthButton({ user }) {
         onClick={() => setShowAuthModal(true)}
         variant="default"
         size="sm"
-        className="bg-orange-500 hover:bg-orange-600 gap-2"
+        className="bg-[#E8A33D] hover:bg-[#d49231] text-[#0A0E14] font-medium h-8 text-xs px-3.5 gap-1.5 rounded-md"
       >
-        <LogIn className="w-4 h-4" />
+        <LogIn className="w-3.5 h-3.5" />
         Sign In
       </Button>
 

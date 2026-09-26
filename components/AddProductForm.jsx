@@ -41,14 +41,14 @@ export default function AddProductForm({ user }) {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="w-full max-w-2xl mx-auto">
+      <form onSubmit={handleSubmit} className="w-full max-w-2xl">
         <div className="flex flex-col sm:flex-row gap-2">
           <Input
             type="url"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder={INPUT_PLACEHOLDER}
-            className="h-12 text-base"
+            className="h-10 text-sm bg-[#12161F] border-[#232937] text-[#F5F6F8] placeholder:text-[#8B92A3] focus-visible:border-[#E8A33D] focus-visible:ring-[#E8A33D]/20 rounded-md"
             required
             disabled={loading}
           />
@@ -56,12 +56,11 @@ export default function AddProductForm({ user }) {
           <Button
             type="submit"
             disabled={loading}
-            className="bg-orange-500 hover:bg-orange-600 h-10 sm:h-12 px-8"
-            size="lg"
+            className="bg-[#E8A33D] hover:bg-[#d49231] text-[#0A0E14] font-medium h-10 px-5 rounded-md shrink-0 transition-colors"
           >
             {loading ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="mr-2 h-4 w-4 animate-spin text-[#0A0E14]" />
                 Adding...
               </>
             ) : (
