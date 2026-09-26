@@ -12,7 +12,7 @@ export default function AuthError() {
         </p>
         <Link
           href="/"
-          className="inline-flex items-center justify-center w-full h-9 rounded-md bg-[#B7791F] hover:bg-[#9f6919] text-[#14171F] font-semibold text-xs transition-colors shadow-xs"
+          className="inline-flex items-center justify-center w-full h-9 rounded-md bg-[#B7791F] hover:bg-[#9f6919] text-[#14171F] font-semibold text-xs focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-2 focus-visible:outline-none transition-colors shadow-xs"
         >
           Back to home
         </Link>

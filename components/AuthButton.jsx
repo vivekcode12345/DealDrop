@@ -16,7 +16,7 @@ export default function AuthButton({ user }) {
           variant="outline"
           size="sm"
           type="submit"
-          className="gap-1.5 h-8 text-xs border-[#E4E4E0] bg-[#FFFFFF] text-[#14171F] hover:bg-[#F4F4F2] hover:text-[#14171F] rounded-md font-sans shadow-xs transition-colors"
+          className="gap-1.5 h-8 text-xs border-[#E4E4E0] bg-[#FFFFFF] text-[#14171F] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans shadow-xs transition-colors shrink-0"
         >
           <LogOut className="w-3.5 h-3.5 text-[#6B7280]" />
           Sign Out
@@ -31,7 +31,7 @@ export default function AuthButton({ user }) {
         onClick={() => setShowAuthModal(true)}
         variant="outline"
         size="sm"
-        className="gap-1.5 h-8 text-xs border-[#E4E4E0] bg-[#FFFFFF] text-[#14171F] hover:bg-[#F4F4F2] hover:text-[#14171F] px-3.5 rounded-md font-sans font-medium shadow-xs transition-colors"
+        className="gap-1.5 h-8 text-xs border-[#E4E4E0] bg-[#FFFFFF] text-[#14171F] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] px-3.5 rounded-md font-sans font-medium shadow-xs transition-colors shrink-0"
       >
         <LogIn className="w-3.5 h-3.5 text-[#B7791F]" />
         Sign In

@@ -48,7 +48,7 @@ export default function AddProductForm({ user }) {
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder={INPUT_PLACEHOLDER}
-            className="h-10 text-sm bg-[#FFFFFF] border-[#E4E4E0] text-[#14171F] placeholder:text-[#6B7280] focus-visible:border-[#B7791F] focus-visible:ring-[#B7791F]/20 rounded-md shadow-xs"
+            className="h-10 text-sm bg-[#FFFFFF] border-[#E4E4E0] text-[#14171F] placeholder:text-[#6B7280] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md shadow-xs transition-colors"
             required
             disabled={loading}
           />
@@ -56,7 +56,7 @@ export default function AddProductForm({ user }) {
           <Button
             type="submit"
             disabled={loading}
-            className="bg-[#B7791F] hover:bg-[#9f6919] text-[#14171F] font-semibold h-10 px-5 rounded-md shrink-0 transition-colors shadow-xs"
+            className="bg-[#B7791F] hover:bg-[#9f6919] text-[#14171F] font-semibold h-10 px-5 rounded-md shrink-0 focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-2 focus-visible:border-[#B7791F] transition-colors shadow-xs"
           >
             {loading ? (
               <>

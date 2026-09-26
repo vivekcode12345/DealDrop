@@ -29,17 +29,19 @@ export default async function Home() {
     <main className="min-h-screen bg-[#FAFAF9] text-[#14171F]">
       {/* Header */}
       <header className="border-b border-[#E4E4E0] bg-white/80 backdrop-blur-sm sticky top-0 z-20">
-        <div className="max-w-6xl mx-auto px-4 py-3.5 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <span className="flex items-center justify-center w-7 h-7 rounded-sm bg-[#B7791F]/10 text-[#B7791F] border border-[#B7791F]/20">
+        <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center gap-3">
+          <div className="flex items-center gap-2 min-w-0 shrink-0">
+            <span className="flex items-center justify-center w-7 h-7 rounded-sm bg-[#B7791F]/10 text-[#B7791F] border border-[#B7791F]/20 shrink-0">
               <TrendingDown className="w-4 h-4 stroke-[2.25]" />
             </span>
-            <span className="font-sans font-semibold text-base tracking-tight text-[#14171F]">
+            <span className="font-sans font-semibold text-base tracking-tight text-[#14171F] truncate">
               dealdrop
             </span>
           </div>
 
-          <AuthButton user={user} />
+          <div className="shrink-0">
+            <AuthButton user={user} />
+          </div>
         </div>
       </header>
 
@@ -179,7 +181,7 @@ export default async function Home() {
             </span>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2 items-start">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-stretch">
             {products.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
