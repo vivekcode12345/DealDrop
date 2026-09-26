@@ -1,93 +1,32 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { scrapeProduct } from "@/lib/firecrawl";
-import { sendPriceDropAlert } from "@/lib/email";
+import { checkProductPrice } from "@/lib/priceCheck";
 
 export const maxDuration = 300;
 
 const CHUNK_SIZE = 3;
 
 // Scrapes a single product, updates it, records the price change and sends an
-// alert when the price drops. Mutates the shared `results` counters and
-// returns "updated" or "failed".
+// alert when the price drops using the shared checkProductPrice function.
+// Mutates the shared `results` counters and returns "updated" or "failed".
 async function processProduct(supabase, product, results) {
-  try {
-    const productData = await scrapeProduct(product.url);
+  const result = await checkProductPrice(supabase, product);
 
-    if (!productData.currentPrice) {
-      results.failed++;
-      return "failed";
-    }
-
-    const newPrice = parseFloat(productData.currentPrice);
-    const oldPrice = parseFloat(product.current_price);
-
-    const { error: updateError } = await supabase
-      .from("products")
-      .update({
-        current_price: newPrice,
-        currency: productData.currencyCode || product.currency,
-        name: productData.productName || product.name,
-        image_url: productData.productImageUrl || product.image_url,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", product.id);
-
-    if (updateError) {
-      console.error(`Failed to update product ${product.id}:`, updateError);
-      results.failed++;
-      return "failed";
-    }
-
-    if (oldPrice !== newPrice) {
-      const { error: historyError } = await supabase
-        .from("price_history")
-        .insert({
-          product_id: product.id,
-          price: newPrice,
-          currency: productData.currencyCode || product.currency,
-        });
-
-      // If the history write fails, treat the product as failed and skip the
-      // email so we never notify on an unrecorded price change.
-      if (historyError) {
-        console.error(
-          `Failed to record price history for ${product.id}:`,
-          historyError
-        );
-        results.failed++;
-        return "failed";
-      }
-
-      results.priceChanges++;
-
-      if (newPrice < oldPrice) {
-        const {
-          data: { user },
-        } = await supabase.auth.admin.getUserById(product.user_id);
-
-        if (user?.email) {
-          const emailResult = await sendPriceDropAlert(
-            user.email,
-            product,
-            oldPrice,
-            newPrice
-          );
-
-          if (emailResult.success) {
-            results.alertsSent++;
-          }
-        }
-      }
-    }
-
-    results.updated++;
-    return "updated";
-  } catch (error) {
-    console.error(`Error processing product ${product.id}:`, error);
+  if (result.status === "failed") {
     results.failed++;
     return "failed";
   }
+
+  if (result.priceChanged) {
+    results.priceChanges++;
+  }
+
+  if (result.alertSent) {
+    results.alertsSent++;
+  }
+
+  results.updated++;
+  return "updated";
 }
 
 export async function POST(request) {

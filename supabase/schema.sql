@@ -11,6 +11,7 @@ create table if not exists products (
   current_price numeric not null,
   currency text not null,
   image_url text,
+  target_price numeric,
   created_at timestamptz not null default now(),
   updated_at timestamp not null default now()
 );

@@ -11,6 +11,7 @@ import { INPUT_PLACEHOLDER } from "@/lib/content";
 
 export default function AddProductForm({ user }) {
   const [url, setUrl] = useState("");
+  const [targetPrice, setTargetPrice] = useState("");
   const [loading, setLoading] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
 
@@ -26,6 +27,9 @@ export default function AddProductForm({ user }) {
 
     const formData = new FormData();
     formData.append("url", url);
+    if (targetPrice.trim() !== "") {
+      formData.append("targetPrice", targetPrice.trim());
+    }
 
     const result = await addProduct(formData);
 
@@ -34,6 +38,7 @@ export default function AddProductForm({ user }) {
     } else {
       toast.success(result.message || "Product tracked successfully!");
       setUrl("");
+      setTargetPrice("");
     }
 
     setLoading(false);
@@ -48,8 +53,19 @@ export default function AddProductForm({ user }) {
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder={INPUT_PLACEHOLDER}
-            className="h-10 text-sm bg-[#FFFFFF] border-[#E4E4E0] text-[#14171F] placeholder:text-[#6B7280] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md shadow-xs transition-colors"
+            className="h-10 text-sm bg-[#FFFFFF] border-[#E4E4E0] text-[#14171F] placeholder:text-[#6B7280] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md shadow-xs transition-colors flex-1"
             required
+            disabled={loading}
+          />
+
+          <Input
+            type="number"
+            step="0.01"
+            min="0"
+            value={targetPrice}
+            onChange={(e) => setTargetPrice(e.target.value)}
+            placeholder="Target price (optional)"
+            className="h-10 text-sm bg-[#FFFFFF] border-[#E4E4E0] text-[#14171F] placeholder:text-[#6B7280] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md shadow-xs transition-colors sm:w-48"
             disabled={loading}
           />
 

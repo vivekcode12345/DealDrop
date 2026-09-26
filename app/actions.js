@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 
 export async function addProduct(formData) {
   const url = formData.get("url");
+  const targetPriceRaw = formData.get("targetPrice");
 
   if (!url) {
     return { error: "URL is required" };
@@ -21,6 +22,19 @@ export async function addProduct(formData) {
 
   if (parsedUrl.protocol !== "http:" && parsedUrl.protocol !== "https:") {
     return { error: "Enter a valid http(s) URL" };
+  }
+
+  let parsedTargetPrice = null;
+  if (
+    targetPriceRaw !== null &&
+    targetPriceRaw !== undefined &&
+    String(targetPriceRaw).trim() !== ""
+  ) {
+    const num = parseFloat(targetPriceRaw);
+    if (Number.isNaN(num) || num <= 0) {
+      return { error: "Enter a valid positive target price" };
+    }
+    parsedTargetPrice = num;
   }
 
   try {
@@ -70,6 +84,7 @@ export async function addProduct(formData) {
           current_price: newPrice,
           currency: currency,
           image_url: productData.productImageUrl,
+          target_price: parsedTargetPrice,
           updated_at: new Date().toISOString(),
         },
         {
