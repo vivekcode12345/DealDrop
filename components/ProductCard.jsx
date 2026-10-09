@@ -8,7 +8,6 @@ import {
   ExternalLink,
   Trash2,
   ChevronDown,
-  ChevronUp,
   RefreshCw,
   Loader2,
 } from "lucide-react";
@@ -91,7 +90,7 @@ export default function ProductCard({ product }) {
     !Number.isNaN(parseFloat(product.target_price));
 
   return (
-    <div className="border border-[#E4E4E0] bg-[#FFFFFF] rounded-sm transition-colors shadow-xs flex flex-col justify-between">
+    <div className="border border-[#E4E4E0] hover:border-[#D1D1CB] bg-[#FFFFFF] rounded-sm transition-colors shadow-xs flex flex-col justify-between">
       <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
         <div className="flex gap-4 items-start">
           {product.image_url && (
@@ -160,17 +159,13 @@ export default function ProductCard({ product }) {
             onClick={() => setShowChart(!showChart)}
             className="h-7 text-xs gap-1 border-[#E4E4E0] bg-[#FAFAF9] text-[#14171F] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors"
           >
-            {showChart ? (
-              <>
-                <ChevronUp className="w-3.5 h-3.5" />
-                Hide Chart
-              </>
-            ) : (
-              <>
-                <ChevronDown className="w-3.5 h-3.5" />
-                Price History
-              </>
-            )}
+            <ChevronDown
+              className={
+                "w-3.5 h-3.5 transition-transform duration-200 " +
+                (showChart ? "rotate-180" : "")
+              }
+            />
+            {showChart ? "Hide Chart" : "Price History"}
           </Button>
 
           <Button

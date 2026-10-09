@@ -4,6 +4,7 @@ import AddProductForm from "@/components/AddProductForm";
 import ProductCard from "@/components/ProductCard";
 import Footer from "@/components/Footer";
 import { TrendingDown, Link2, History, Mail } from "lucide-react";
+import Link from "next/link";
 import AuthButton from "@/components/AuthButton";
 import {
   SITE_NAME,
@@ -31,14 +32,16 @@ export default async function Home() {
       {/* Header */}
       <header className="border-b border-[#E4E4E0] bg-white/80 backdrop-blur-sm sticky top-0 z-20">
         <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center gap-3">
-          <div className="flex items-center gap-2 min-w-0 shrink-0">
-            <span className="flex items-center justify-center w-7 h-7 rounded-sm bg-[#B7791F]/10 text-[#B7791F] border border-[#B7791F]/20 shrink-0">
-              <TrendingDown className="w-4 h-4 stroke-[2.25]" />
-            </span>
+          <Link
+            href="/"
+            aria-label="dealdrop — home"
+            className="group flex items-baseline gap-1.5 min-w-0 shrink-0 rounded-sm transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FAFAF9]"
+          >
+            <TrendingDown className="w-5 h-5 stroke-[2.25] text-[#B7791F] self-center shrink-0" />
             <span className="font-sans font-semibold text-base tracking-tight text-[#14171F] truncate">
               dealdrop
             </span>
-          </div>
+          </Link>
 
           <div className="shrink-0">
             <AuthButton user={user} />
@@ -50,9 +53,9 @@ export default async function Home() {
         {/* Hero Section */}
         <section className="py-14 md:py-20 px-4 border-b border-[#E4E4E0]">
           <div className="max-w-6xl mx-auto">
-            <div className="grid lg:grid-cols-12 gap-10 items-center">
+            <div className="grid md:grid-cols-12 gap-8 md:gap-10 items-center">
               {/* Left-aligned Hero Content */}
-              <div className="lg:col-span-7 text-left">
+              <div className="md:col-span-7 text-left">
                 {HERO_BADGE && (
                   <div className="inline-flex items-center gap-2 border border-[#E4E4E0] bg-[#FFFFFF] text-[#6B7280] px-3 py-1 rounded-sm text-xs font-medium mb-5 shadow-xs">
                     {HERO_BADGE}
@@ -70,8 +73,8 @@ export default async function Home() {
               </div>
 
               {/* Hero Visual: Static Price-Drop Sparkline */}
-              <div className="lg:col-span-5">
-                <div className="border border-[#E4E4E0] bg-[#FFFFFF] rounded-sm p-5 relative overflow-hidden shadow-xs">
+              <div className="md:col-span-5">
+                <div className="border border-[#E4E4E0] bg-[#FFFFFF] rounded-sm p-4 sm:p-5 relative overflow-hidden shadow-xs">
                   <div className="flex items-center justify-between pb-3 border-b border-[#E4E4E0] mb-4">
                     <div className="flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-[#16A34A]" />
@@ -173,7 +176,7 @@ export default async function Home() {
 
         {/* Products Grid */}
         {user && products.length > 0 && (
-          <section className="max-w-6xl mx-auto px-4 py-12">
+          <section className="max-w-6xl mx-auto px-4 py-12 md:py-16">
             <div className="flex items-center justify-between mb-6 pb-3 border-b border-[#E4E4E0]">
               <h2 className="text-lg font-medium text-[#14171F]">
                 Your Tracked Products
@@ -193,7 +196,7 @@ export default async function Home() {
 
         {/* Empty State */}
         {user && products.length === 0 && (
-          <section className="max-w-xl mx-auto px-4 py-16 text-center">
+          <section className="max-w-xl mx-auto px-4 py-12 md:py-16 text-center">
             <div className="border border-[#E4E4E0] bg-[#FFFFFF] rounded-sm p-10 shadow-xs">
               <div className="w-10 h-10 rounded-sm bg-[#FAFAF9] border border-[#E4E4E0] flex items-center justify-center mx-auto mb-4">
                 <Link2 className="w-5 h-5 text-[#6B7280]" />
