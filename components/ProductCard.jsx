@@ -10,6 +10,7 @@ import {
   ChevronDown,
   RefreshCw,
   Loader2,
+  Share2,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -67,6 +68,17 @@ export default function ProductCard({ product }) {
       toast.error("Network error while checking price");
     } finally {
       setChecking(false);
+    }
+  };
+
+  const handleShare = async () => {
+    try {
+      const shareUrl = `${window.location.origin}/share/${product.id}`;
+      await navigator.clipboard.writeText(shareUrl);
+      toast.success("Link copied!");
+    } catch (err) {
+      console.error("Share error:", err);
+      toast.error("Could not copy link");
     }
   };
 
@@ -166,6 +178,17 @@ export default function ProductCard({ product }) {
               }
             />
             {showChart ? "Hide Chart" : "Price History"}
+          </Button>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleShare}
+            title="Copy a public link to this product's price page"
+            className="h-7 text-xs gap-1 border-[#E4E4E0] bg-[#FAFAF9] text-[#14171F] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors"
+          >
+            <Share2 className="w-3.5 h-3.5" />
+            Share
           </Button>
 
           <Button
