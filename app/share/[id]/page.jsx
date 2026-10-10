@@ -32,7 +32,13 @@ function formatPrice(price, currency) {
   })}`.trim();
 }
 
-function HistoryChart({ history }) {
+function formatShortDate(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return date.toLocaleDateString("en-GB", { month: "short", day: "numeric" });
+}
+
+function HistoryChart({ history, currency }) {
   if (!history || history.length < 2) return null;
 
   const prices = history.map((h) => parseFloat(h.price));
@@ -40,18 +46,25 @@ function HistoryChart({ history }) {
   const max = Math.max(...prices);
   const range = max - min || 1;
 
+  // Extra top padding so the max label can sit above the line's high point.
   const width = 600;
   const height = 180;
   const padX = 6;
-  const padY = 14;
+  const padY = 26;
 
   const points = prices.map((price, i) => {
     const x = padX + (i / (prices.length - 1)) * (width - padX * 2);
     const y = padY + (1 - (price - min) / range) * (height - padY * 2);
-    return { x, y };
+    return { x, y, price };
   });
 
   const polyline = points.map((p) => `${p.x},${p.y}`).join(" ");
+
+  const first = points[0];
+  const last = points[points.length - 1];
+
+  const firstDate = formatShortDate(history[0].checked_at);
+  const lastDate = formatShortDate(history[history.length - 1].checked_at);
 
   return (
     <div className="w-full">
@@ -86,7 +99,61 @@ function HistoryChart({ history }) {
           strokeLinecap="round"
           strokeLinejoin="round"
         />
+        {/* Highest recorded price */}
+        <text
+          x="2"
+          y="12"
+          fill="#6B7280"
+          fontSize="11"
+          fontFamily="var(--font-geist-mono)"
+        >
+          {formatPrice(max, currency)}
+        </text>
+        {/* Lowest recorded price */}
+        <text
+          x="2"
+          y={height - 4}
+          fill="#6B7280"
+          fontSize="11"
+          fontFamily="var(--font-geist-mono)"
+        >
+          {formatPrice(min, currency)}
+        </text>
+        {/* Start and end dots */}
+        <circle cx={first.x} cy={first.y} r="3" fill={ACCENT} />
+        <circle cx={last.x} cy={last.y} r="3" fill={ACCENT} />
       </svg>
+      <div className="flex items-center justify-between mt-1">
+        <span className="font-mono text-[11px] text-[#6B7280]">{firstDate}</span>
+        <span className="font-mono text-[11px] text-[#6B7280]">{lastDate}</span>
+      </div>
+    </div>
+  );
+}
+
+function SinglePricePoint({ history, currency }) {
+  const entry = history[0];
+  const price = formatPrice(entry.price, currency);
+  const date = formatShortDate(entry.checked_at);
+
+  return (
+    <div className="w-full">
+      <div className="flex items-center justify-between mb-3">
+        <h4 className="text-xs font-medium text-[#6B7280]">
+          Recorded Price Trend
+        </h4>
+        <span className="font-mono text-[11px] text-[#6B7280]">
+          1 check
+        </span>
+      </div>
+      <div className="flex items-baseline gap-3">
+        <span className="font-mono text-lg font-semibold text-[#B7791F]">
+          {price}
+        </span>
+        <span className="font-mono text-[11px] text-[#6B7280]">
+          on {date}
+        </span>
+      </div>
     </div>
   );
 }
@@ -166,12 +233,16 @@ export default async function SharePage({ params }) {
           </div>
 
           <div className="border border-[#E4E4E0] bg-[#FFFFFF] rounded-sm shadow-xs p-4 sm:p-5">
-            {history.length >= 2 ? (
-              <HistoryChart history={history} />
-            ) : (
+            {history.length === 0 && (
               <p className="text-center py-6 text-[#6B7280] w-full text-xs">
                 No price history recorded yet.
               </p>
+            )}
+            {history.length === 1 && (
+              <SinglePricePoint history={history} currency={product.currency} />
+            )}
+            {history.length >= 2 && (
+              <HistoryChart history={history} currency={product.currency} />
             )}
           </div>
         </div>
