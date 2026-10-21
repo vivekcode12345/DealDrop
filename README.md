@@ -114,6 +114,23 @@ dealdrop/
 ├── components/
 │   ├── ProductCard.jsx                   # Product panel: Check Now, Share, chart toggle, remove
 │   ├── AddProductForm.jsx                # URL + optional target price inputs
+│   ├── PriceChart.jsx                    # Recharts price-history chart
+│   ├── AuthButton.jsx / AuthModal.js     # Supabase Google OAuth sign-in UI
+│   └── Footer.jsx
+├── lib/
+│   ├── priceCheck.js                     # Shared scrape/update/alert logic (cron + on-demand)
+│   ├── publicProduct.js                  # Service-role read for public share pages
+│   ├── firecrawl.js                      # Firecrawl v4 structured JSON extraction
+│   ├── email.js                          # Resend alert email template
+│   └── content.js                        # Single source of truth for UI copy
+├── supabase/
+│   └── schema.sql                        # Tables, 6 RLS policies, pg_cron schedule
+├── screenshot/                           # README images
+└── proxy.js                              # Middleware session refresh
+```
+
+---
+
 ## Getting Started
 
 ### 1. Clone the repository
@@ -198,23 +215,18 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Author
 
-Built by **[Vivek Verma](https://github.com/vivekcode12345)**
+<div align="center">
+  <img src="https://github.com/vivekcode12345.png" alt="Vivek Verma" width="96" height="96" style="border-radius:50%;" />
+</div>
 
-│   ├── PriceChart.jsx                    # Recharts price-history chart
-│   ├── AuthButton.jsx / AuthModal.js     # Supabase Google OAuth sign-in UI
-│   └── Footer.jsx
-├── lib/
-│   ├── priceCheck.js                     # Shared scrape/update/alert logic (cron + on-demand)
-│   ├── publicProduct.js                  # Service-role read for public share pages
-│   ├── firecrawl.js                      # Firecrawl v4 structured JSON extraction
-│   ├── email.js                          # Resend alert email template
-│   └── content.js                        # Single source of truth for UI copy
-├── supabase/
-│   └── schema.sql                        # Tables, 6 RLS policies, pg_cron schedule
-├── screenshot/                           # README images
-└── proxy.js                              # Middleware session refresh
-```
+**Vivek Verma** — Creator and maintainer of DealDrop.
+
+- **GitHub:** [@vivekcode12345](https://github.com/vivekcode12345)
+- **Email:** [vivek7148verma@gmail.com](mailto:vivek7148verma@gmail.com)
 
 ---
 
----
+<p align="center">
+  Made with <span role="img" aria-label="love">❤️</span> by <a href="https://github.com/vivekcode12345">Vivek Verma</a>
+</p>
+
