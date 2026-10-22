@@ -47,42 +47,51 @@ export default function AddProductForm({ user }) {
   return (
     <>
       <form onSubmit={handleSubmit} className="w-full max-w-2xl">
-        <div className="flex flex-col sm:flex-row gap-2">
+        <div className="flex flex-col gap-2">
+          {/* Row 1: the product URL always gets a full-width field. */}
           <Input
             type="url"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder={INPUT_PLACEHOLDER}
-            className="h-10 text-sm bg-[#FFFFFF] border-[#E4E4E0] text-[#14171F] placeholder:text-[#6B7280] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md shadow-xs transition-colors flex-1"
+            aria-label="Product URL to track"
+            className="h-10 w-full min-w-0 text-sm bg-[#FFFFFF] border-[#E4E4E0] text-[#14171F] placeholder:text-[#6B7280] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md shadow-xs transition-colors"
             required
             disabled={loading}
           />
 
-          <Input
-            type="number"
-            step="0.01"
-            min="0"
-            value={targetPrice}
-            onChange={(e) => setTargetPrice(e.target.value)}
-            placeholder="Target price (optional)"
-            className="h-10 text-sm bg-[#FFFFFF] border-[#E4E4E0] text-[#14171F] placeholder:text-[#6B7280] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md shadow-xs transition-colors sm:w-48"
-            disabled={loading}
-          />
+          {/* Row 2: optional target price + submit action. */}
+          <div className="flex flex-col sm:flex-row gap-2">
+            <Input
+              type="number"
+              step="0.01"
+              min="0"
+              value={targetPrice}
+              onChange={(e) => setTargetPrice(e.target.value)}
+              placeholder="Target price (optional)"
+              aria-label="Target price (optional)"
+              className="h-10 w-full min-w-0 sm:flex-1 text-sm bg-[#FFFFFF] border-[#E4E4E0] text-[#14171F] placeholder:text-[#6B7280] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md shadow-xs transition-colors"
+              disabled={loading}
+            />
 
-          <Button
-            type="submit"
-            disabled={loading}
-            className="bg-[#B7791F] hover:bg-[#9f6919] text-[#14171F] font-semibold h-10 px-5 rounded-md shrink-0 focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-2 focus-visible:border-[#B7791F] transition-colors shadow-xs"
-          >
-            {loading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin text-[#14171F]" />
-                Adding...
-              </>
-            ) : (
-              "Track Price"
-            )}
-          </Button>
+            <Button
+              type="submit"
+              disabled={loading}
+              className="bg-[#B7791F] hover:bg-[#9f6919] text-[#14171F] font-semibold h-10 px-5 rounded-md shrink-0 w-full sm:w-auto focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-2 focus-visible:border-[#B7791F] transition-colors shadow-xs"
+            >
+              {loading ? (
+                <>
+                  <Loader2
+                    className="mr-2 h-4 w-4 animate-spin text-[#14171F]"
+                    aria-hidden="true"
+                  />
+                  Adding...
+                </>
+              ) : (
+                "Track Price"
+              )}
+            </Button>
+          </div>
         </div>
       </form>
 

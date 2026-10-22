@@ -19,6 +19,18 @@ import {
 // Functional icons aligned with each feature panel.
 const FEATURE_ICONS = [Link2, History, Mail];
 
+// One shared container so the navbar, hero, products section and footer all
+// share the same left/right edges at every breakpoint.
+const CONTAINER =
+  "mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8";
+
+// Captured once per server render so every card shares the same "checked Xm
+// ago" baseline and the client hydration matches the server HTML exactly.
+// Kept in a helper so the timestamp is read at request time (not module load).
+function readServerNow() {
+  return Date.now();
+}
+
 export default async function Home() {
   const supabase = await createClient();
   const {
@@ -26,19 +38,22 @@ export default async function Home() {
   } = await supabase.auth.getUser();
 
   const products = user ? await getProducts() : [];
+  // Single timestamp for the whole render, so every card shares the same
+  // "checked Xm ago" baseline and the client render matches the server HTML.
+  const serverNow = readServerNow();
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FAFAF9] text-[#14171F]">
       {/* Header */}
       <header className="border-b border-[#E4E4E0] bg-white/80 backdrop-blur-sm sticky top-0 z-20">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center gap-3">
+        <div className={`${CONTAINER} py-3 flex justify-between items-center gap-3`}>
           <Link
             href="/"
             aria-label="dealdrop — home"
-            className="group flex items-baseline gap-1.5 min-w-0 shrink-0 rounded-sm transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FAFAF9]"
+            className="group flex items-center gap-1.5 min-w-0 shrink-0 rounded-sm transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FAFAF9]"
           >
-            <TrendingDown className="w-5 h-5 stroke-[2.25] text-[#B7791F] self-center shrink-0" />
-            <span className="font-sans font-semibold text-base tracking-tight text-[#14171F] truncate">
+            <TrendingDown className="w-5 h-5 stroke-[2.25] text-[#B7791F] shrink-0" aria-hidden="true" />
+            <span className="font-sans font-semibold text-base leading-5 tracking-tight text-[#14171F] truncate">
               dealdrop
             </span>
           </Link>
@@ -51,8 +66,8 @@ export default async function Home() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="py-14 md:py-20 px-4 border-b border-[#E4E4E0]">
-          <div className="max-w-6xl mx-auto">
+        <section className="py-14 md:py-20 border-b border-[#E4E4E0]">
+          <div className={CONTAINER}>
             <div className="grid md:grid-cols-12 gap-8 md:gap-10 items-center">
               {/* Left-aligned Hero Content */}
               <div className="md:col-span-7 text-left">
@@ -62,7 +77,7 @@ export default async function Home() {
                   </div>
                 )}
 
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-[#14171F] tracking-tight leading-[1.15] mb-4">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-[#14171F] tracking-tight leading-[1.15] mb-4 text-balance">
                   {HERO_TITLE}
                 </h1>
                 <p className="text-base sm:text-lg text-[#6B7280] mb-8 max-w-2xl leading-relaxed">
@@ -92,7 +107,9 @@ export default async function Home() {
                     </div>
                     <div className="text-right">
                       <div className="text-xs text-[#6B7280] mb-1">Current price</div>
-                      <div className="font-mono text-2xl font-bold text-[#B7791F]">$203.18</div>
+                      <div className="font-mono text-2xl font-bold text-[#B7791F]">
+                        $203.18
+                      </div>
                     </div>
                   </div>
 
@@ -131,12 +148,15 @@ export default async function Home() {
                       <circle cx="270" cy="72" r="2.5" fill="#FFFFFF" stroke="#B7791F" strokeWidth="1.5" />
                       <circle cx="330" cy="86" r="4" fill="#16A34A" stroke="#FFFFFF" strokeWidth="2" />
                     </svg>
-                    <div className="flex justify-between font-mono text-[11px] text-[#6B7280] mt-2">
-                      <span>Day 1</span>
-                      <span>Day 7</span>
-                      <span>Day 14</span>
-                      <span>Day 21</span>
-                      <span>Day 30 (Drop alert)</span>
+                    <div className="flex justify-between gap-2 font-mono text-[10px] sm:text-[11px] text-[#6B7280] mt-2">
+                      <span className="whitespace-nowrap">Day 1</span>
+                      <span className="whitespace-nowrap">Day 7</span>
+                      <span className="whitespace-nowrap">Day 14</span>
+                      <span className="whitespace-nowrap">Day 21</span>
+                      <span className="whitespace-nowrap">
+                        Day 30
+                        <span className="hidden lg:inline"> (Drop alert)</span>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -156,7 +176,7 @@ export default async function Home() {
                       >
                         <div>
                           <div className="w-8 h-8 rounded-sm bg-[#FAFAF9] border border-[#E4E4E0] flex items-center justify-center mb-4">
-                            {Icon && <Icon className="w-4 h-4 text-[#B7791F]" />}
+                            {Icon && <Icon className="w-4 h-4 text-[#B7791F]" aria-hidden="true" />}
                           </div>
                           <h2 className="text-sm font-medium text-[#14171F] mb-1.5">
                             {title}
@@ -176,7 +196,7 @@ export default async function Home() {
 
         {/* Products Grid */}
         {user && products.length > 0 && (
-          <section className="max-w-6xl mx-auto px-4 py-12 md:py-16">
+          <section className={`${CONTAINER} py-12 md:py-16`}>
             <div className="flex items-center justify-between mb-6 pb-3 border-b border-[#E4E4E0]">
               <h2 className="text-lg font-medium text-[#14171F]">
                 Your Tracked Products
@@ -186,9 +206,9 @@ export default async function Home() {
               </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-stretch">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 items-stretch">
               {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard key={product.id} product={product} serverNow={serverNow} />
               ))}
             </div>
           </section>
@@ -196,7 +216,7 @@ export default async function Home() {
 
         {/* Empty State */}
         {user && products.length === 0 && (
-          <section className="max-w-xl mx-auto px-4 py-12 md:py-16 text-center">
+          <section className="mx-auto w-full max-w-xl px-4 sm:px-6 lg:px-8 py-12 md:py-16 text-center">
             <div className="border border-[#E4E4E0] bg-[#FFFFFF] rounded-sm p-10 shadow-xs">
               <div className="w-10 h-10 rounded-sm bg-[#FAFAF9] border border-[#E4E4E0] flex items-center justify-center mx-auto mb-4">
                 <Link2 className="w-5 h-5 text-[#6B7280]" />

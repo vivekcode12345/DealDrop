@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getPublicProductData } from "@/lib/publicProduct";
 import { TrendingDown } from "lucide-react";
+import { formatMoney } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +14,7 @@ export async function generateMetadata({ params }) {
   }
 
   const { product } = data;
-  const priceText = `${product.currency} ${product.current_price}`;
+  const priceText = formatMoney(product.current_price, product.currency);
 
   return {
     title: `${product.name} — DealDrop`,
@@ -22,15 +23,6 @@ export async function generateMetadata({ params }) {
 }
 
 const ACCENT = "#B7791F";
-
-function formatPrice(price, currency) {
-  const num = parseFloat(price);
-  if (Number.isNaN(num)) return `${currency || ""} —`.trim();
-  return `${currency || ""} ${num.toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`.trim();
-}
 
 function formatShortDate(value) {
   const date = new Date(value);
@@ -107,7 +99,7 @@ function HistoryChart({ history, currency }) {
           fontSize="11"
           fontFamily="var(--font-geist-mono)"
         >
-          {formatPrice(max, currency)}
+          {formatMoney(max, currency)}
         </text>
         {/* Lowest recorded price */}
         <text
@@ -117,7 +109,7 @@ function HistoryChart({ history, currency }) {
           fontSize="11"
           fontFamily="var(--font-geist-mono)"
         >
-          {formatPrice(min, currency)}
+          {formatMoney(min, currency)}
         </text>
         {/* Start and end dots */}
         <circle cx={first.x} cy={first.y} r="3" fill={ACCENT} />
@@ -133,7 +125,7 @@ function HistoryChart({ history, currency }) {
 
 function SinglePricePoint({ history, currency }) {
   const entry = history[0];
-  const price = formatPrice(entry.price, currency);
+  const price = formatMoney(entry.price, currency);
   const date = formatShortDate(entry.checked_at);
 
   return (
@@ -147,7 +139,7 @@ function SinglePricePoint({ history, currency }) {
         </span>
       </div>
       <div className="flex items-baseline gap-3">
-        <span className="font-mono text-lg font-semibold text-[#B7791F]">
+        <span className="font-mono text-lg font-semibold text-accent-text">
           {price}
         </span>
         <span className="font-mono text-[11px] text-[#6B7280]">
@@ -199,7 +191,7 @@ export default async function SharePage({ params }) {
             aria-label="dealdrop — home"
             className="flex items-baseline gap-1.5 min-w-0 shrink-0 rounded-sm transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FAFAF9]"
           >
-            <TrendingDown className="w-5 h-5 stroke-[2.25] text-[#B7791F] self-center shrink-0" />
+            <TrendingDown className="w-5 h-5 stroke-[2.25] text-[#B7791F] self-center shrink-0" aria-hidden="true" />
             <span className="font-sans font-semibold text-base tracking-tight text-[#14171F]">
               dealdrop
             </span>
@@ -215,6 +207,10 @@ export default async function SharePage({ params }) {
               <img
                 src={product.image_url}
                 alt={product.name}
+                width={128}
+                height={128}
+                loading="lazy"
+                decoding="async"
                 className="w-28 h-28 sm:w-32 sm:h-32 object-cover rounded-sm border border-[#E4E4E0] bg-[#FAFAF9] shrink-0"
               />
             )}
@@ -224,7 +220,7 @@ export default async function SharePage({ params }) {
                 {product.name}
               </h1>
               <div className="font-mono text-3xl sm:text-4xl font-semibold text-[#B7791F] tracking-tight">
-                {formatPrice(product.current_price, product.currency)}
+                {formatMoney(product.current_price, product.currency)}
               </div>
               <p className="text-xs text-[#6B7280] mt-3">
                 Tracked since {trackedSince}
@@ -252,7 +248,7 @@ export default async function SharePage({ params }) {
         <div className="max-w-4xl mx-auto px-4 py-5 text-center">
           <Link
             href="/"
-            className="text-xs text-[#6B7280] hover:text-[#B7791F] transition-colors"
+            className="text-xs text-[#6B7280] hover:text-[#8A5A12] transition-colors"
           >
             Tracked with DealDrop
           </Link>

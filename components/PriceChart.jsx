@@ -38,8 +38,11 @@ export default function PriceChart({ productId }) {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-6 text-[#6B7280] w-full text-xs">
-        <Loader2 className="w-4 h-4 animate-spin mr-2 text-[#B7791F]" />
+      <div className="flex items-center justify-center py-6 text-[#6B7280] w-full text-xs min-h-[190px]">
+        <Loader2
+          className="w-4 h-4 animate-spin mr-2 text-[#B7791F]"
+          aria-hidden="true"
+        />
         Loading price history...
       </div>
     );
@@ -47,7 +50,7 @@ export default function PriceChart({ productId }) {
 
   if (data.length === 0) {
     return (
-      <div className="text-center py-6 text-[#6B7280] w-full text-xs">
+      <div className="text-center py-6 text-[#6B7280] w-full text-xs min-h-[190px] flex items-center justify-center">
         No price history recorded yet. Daily updates will log new data points.
       </div>
     );

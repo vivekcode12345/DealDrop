@@ -15,15 +15,20 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { formatMoney } from "@/lib/format";
 
 const COOLDOWN_MS = 5 * 60 * 1000; // 5 minutes
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, serverNow }) {
   const router = useRouter();
   const [showChart, setShowChart] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [checking, setChecking] = useState(false);
-  const [now, setNow] = useState(() => Date.now());
+  // Seeded from the server render timestamp so the first client render matches
+  // the server HTML exactly (no hydration mismatch, no layout shift).
+  const [now, setNow] = useState(() =>
+    typeof serverNow === "number" ? serverNow : Date.now()
+  );
 
   // Periodically update `now` so cooldown elapsed minutes stay accurate
   useEffect(() => {
@@ -56,7 +61,10 @@ export default function ProductCard({ product }) {
       } else {
         if (data.priceChanged) {
           toast.success(
-            `Price updated to ${data.product.currency} ${data.product.current_price}`
+            `Price updated to ${formatMoney(
+              data.product.current_price,
+              data.product.currency
+            )}`
           );
         } else {
           toast.success("Checked: price unchanged");
@@ -110,6 +118,10 @@ export default function ProductCard({ product }) {
             <img
               src={product.image_url}
               alt={product.name}
+              width={80}
+              height={80}
+              loading="lazy"
+              decoding="async"
               className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-sm border border-[#E4E4E0] bg-[#FAFAF9] shrink-0"
             />
           )}
@@ -122,102 +134,135 @@ export default function ProductCard({ product }) {
               {product.name}
             </h3>
 
-            <div className="flex items-baseline gap-2 flex-wrap">
-              <span className="font-mono text-2xl font-bold text-[#B7791F] tabular-nums">
-                {product.currency} {product.current_price}
-              </span>
+            {/* Price on its own line */}
+            <div className="font-mono text-2xl font-bold text-[#B7791F] tabular-nums leading-tight">
+              {formatMoney(product.current_price, product.currency)}
+            </div>
+
+            {/* One wrapping row of small badges */}
+            <div className="flex flex-wrap items-center gap-2 mt-2">
               {hasTargetPrice && (
-                <span className="inline-flex items-center text-[11px] font-mono text-[#B7791F] border border-[#B7791F]/30 bg-[#B7791F]/10 px-2 py-0.5 rounded-sm font-medium">
-                  Target: {product.currency} {parseFloat(product.target_price).toFixed(2)}
+                <span className="inline-flex items-center text-[11px] font-mono text-accent-text border border-[#B7791F]/30 bg-[#B7791F]/10 px-2 py-0.5 rounded-sm font-medium">
+                  Target: {formatMoney(product.target_price, product.currency)}
                 </span>
               )}
-              <span className="inline-flex items-center text-[11px] font-mono text-[#6B7280] border border-[#E4E4E0] bg-[#FAFAF9] px-2 py-0.5 rounded-sm">
-                Monitored
+              <span className="inline-flex items-center gap-1.5 text-[11px] text-[#6B7280]">
+                <span
+                  className="w-1.5 h-1.5 rounded-full bg-[#16A34A] shrink-0"
+                  aria-hidden="true"
+                />
+                Tracking daily
               </span>
             </div>
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 mt-4 pt-3 border-t border-[#E4E4E0]">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleCheckNow}
-            disabled={checking || isCooldown}
-            title={isCooldown ? `Checked recently` : "Check latest price now"}
-            className="h-7 text-xs gap-1 border-[#E4E4E0] bg-[#FAFAF9] text-[#14171F] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors disabled:opacity-60"
-          >
-            {checking ? (
-              <>
-                <Loader2 className="w-3.5 h-3.5 animate-spin text-[#B7791F]" />
-                Checking...
-              </>
-            ) : isCooldown ? (
-              <>
-                <RefreshCw className="w-3 h-3 text-[#6B7280]" />
-                Checked {elapsedMinutes === 0 ? "<1m" : `${elapsedMinutes}m`} ago
-              </>
-            ) : (
-              <>
-                <RefreshCw className="w-3 h-3 text-[#B7791F]" />
-                Check Now
-              </>
-            )}
-          </Button>
+        {/* Single-row actions: text actions on the left, icon actions on the
+            right. The row wraps on narrow screens so the two groups never
+            overlap. */}
+        <div className="flex flex-wrap items-center justify-between gap-2 mt-4 pt-3 border-t border-[#E4E4E0]">
+          <div className="flex flex-wrap items-center gap-2 min-w-0">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleCheckNow}
+              disabled={checking || isCooldown}
+              title={isCooldown ? `Checked recently` : "Check latest price now"}
+              className="h-7 text-xs gap-1 min-w-[8rem] justify-center border-[#E4E4E0] bg-[#FAFAF9] text-[#14171F] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors disabled:opacity-60"
+            >
+              {checking ? (
+                <>
+                  <Loader2
+                    className="w-3.5 h-3.5 animate-spin text-[#B7791F]"
+                    aria-hidden="true"
+                  />
+                  Checking...
+                </>
+              ) : isCooldown ? (
+                <>
+                  <RefreshCw className="w-3 h-3 text-[#6B7280]" aria-hidden="true" />
+                  Checked {elapsedMinutes === 0 ? "<1m" : `${elapsedMinutes}m`} ago
+                </>
+              ) : (
+                <>
+                  <RefreshCw className="w-3 h-3 text-[#B7791F]" aria-hidden="true" />
+                  Check Now
+                </>
+              )}
+            </Button>
 
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setShowChart(!showChart)}
-            className="h-7 text-xs gap-1 border-[#E4E4E0] bg-[#FAFAF9] text-[#14171F] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors"
-          >
-            <ChevronDown
-              className={
-                "w-3.5 h-3.5 transition-transform duration-200 " +
-                (showChart ? "rotate-180" : "")
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowChart(!showChart)}
+              aria-expanded={showChart}
+              className="h-7 text-xs gap-1 border-[#E4E4E0] bg-[#FAFAF9] text-[#14171F] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors"
+            >
+              <ChevronDown
+                className={
+                  "w-3.5 h-3.5 transition-transform duration-200 " +
+                  (showChart ? "rotate-180" : "")
+                }
+                aria-hidden="true"
+              />
+              {showChart ? "Hide Chart" : "Price History"}
+            </Button>
+          </div>
+
+          <div className="flex items-center gap-1.5 shrink-0 ml-auto">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleShare}
+              aria-label="Copy share link"
+              title="Copy share link"
+              className="h-7 w-7 p-0 border-[#E4E4E0] bg-[#FAFAF9] text-[#14171F] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors"
+            >
+              <Share2 className="w-3.5 h-3.5" aria-hidden="true" />
+            </Button>
+
+            <Button
+              variant="outline"
+              size="sm"
+              aria-label="Open product page"
+              title="Open product page"
+              className="h-7 w-7 p-0 border-[#E4E4E0] bg-[#FAFAF9] text-[#14171F] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors"
+              nativeButton={false}
+              render={
+                <Link
+                  href={product.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Open product page"
+                  title="Open product page"
+                />
               }
-            />
-            {showChart ? "Hide Chart" : "Price History"}
-          </Button>
+            >
+              <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
+            </Button>
 
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleShare}
-            title="Copy a public link to this product's price page"
-            className="h-7 text-xs gap-1 border-[#E4E4E0] bg-[#FAFAF9] text-[#14171F] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors"
-          >
-            <Share2 className="w-3.5 h-3.5" />
-            Share
-          </Button>
-
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-7 text-xs gap-1 border-[#E4E4E0] bg-[#FAFAF9] text-[#14171F] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors"
-            nativeButton={false}
-            render={<Link href={product.url} target="_blank" rel="noopener noreferrer" />}
-          >
-            <ExternalLink className="w-3.5 h-3.5" />
-            View Product
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleDelete}
-            disabled={deleting}
-            className="h-7 text-xs text-red-600 hover:text-red-700 hover:bg-red-50 focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 gap-1 ml-auto rounded-md font-sans transition-colors"
-          >
-            <Trash2 className="w-3.5 h-3.5" />
-            Remove
-          </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleDelete}
+              disabled={deleting}
+              aria-label="Remove product"
+              title="Remove product"
+              className="h-7 w-7 p-0 text-red-600 hover:text-red-700 hover:bg-red-50 focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 rounded-md font-sans transition-colors"
+            >
+              <Trash2 className="w-3.5 h-3.5" aria-hidden="true" />
+            </Button>
+          </div>
         </div>
       </div>
 
       {showChart && (
         <div className="border-t border-[#E4E4E0] bg-[#FAFAF9]/60 p-4 sm:p-5">
-          <PriceChart productId={product.id} />
+          {/* Reserve the chart's height so expanding the panel does not shift
+              the surrounding content. */}
+          <div className="min-h-[190px]">
+            <PriceChart productId={product.id} />
+          </div>
         </div>
       )}
     </div>

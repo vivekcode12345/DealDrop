@@ -19,11 +19,11 @@ function GitHubIcon({ className }) {
 export default function Footer() {
   return (
     <footer className="border-t border-[#E4E4E0] bg-[#FFFFFF] mt-auto">
-      <div className="max-w-6xl mx-auto px-4 py-8">
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col sm:flex-row items-center sm:items-center sm:justify-between gap-4 text-center sm:text-left">
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 min-w-0">
-            <span className="flex items-center justify-center w-6 h-6 rounded-sm bg-[#B7791F]/10 text-[#B7791F] border border-[#B7791F]/20 shrink-0">
-              <TrendingDown className="w-3.5 h-3.5 stroke-[2.25]" />
+            <span className="flex items-center justify-center w-6 h-6 rounded-sm bg-[#B7791F]/10 text-[#8A5A12] border border-[#B7791F]/20 shrink-0">
+              <TrendingDown className="w-3.5 h-3.5 stroke-[2.25]" aria-hidden="true" />
             </span>
             <span className="font-sans font-semibold text-sm tracking-tight text-[#14171F]">
               dealdrop
@@ -40,7 +40,7 @@ export default function Footer() {
                 href="https://github.com/vivekcode12345"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#14171F] font-medium hover:text-[#B7791F] transition-colors underline-offset-2 hover:underline focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:outline-none rounded-sm"
+                className="text-[#14171F] font-medium hover:text-[#8A5A12] transition-colors underline-offset-2 hover:underline focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:outline-none rounded-sm"
               >
                 Vivek Verma
               </Link>
