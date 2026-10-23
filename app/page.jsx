@@ -3,8 +3,9 @@ import { getProducts } from "./actions";
 import AddProductForm from "@/components/AddProductForm";
 import ProductCard from "@/components/ProductCard";
 import Footer from "@/components/Footer";
-import { TrendingDown, Link2, History, Mail } from "lucide-react";
+import { Link2, History, Mail } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import AuthButton from "@/components/AuthButton";
 import {
   SITE_NAME,
@@ -67,10 +68,14 @@ export default async function Home() {
               aria-label="dealdrop — home"
               className="group flex items-center gap-1.5 min-w-0 shrink-0 rounded-sm transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FAFAF9]"
             >
-              <TrendingDown className="w-5 h-5 stroke-[2.25] text-[#B7791F] shrink-0" aria-hidden="true" />
-              <span className="font-sans font-semibold text-base leading-5 tracking-tight text-[#14171F] truncate">
-                dealdrop
-              </span>
+              <Image
+                src="/logo.png"
+                width={1219}
+                height={864}
+                priority
+                alt="dealdrop"
+                className="h-8 w-auto shrink-0 object-contain"
+              />
             </Link>
             <nav className="hidden md:flex items-center gap-6 ml-8">
               <a
