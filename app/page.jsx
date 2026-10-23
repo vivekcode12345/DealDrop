@@ -60,7 +60,7 @@ export default async function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-[#FAFAF9] text-[#14171F]">
       {/* Header */}
-      <header className="border-b border-[#E4E4E0] bg-white/80 backdrop-blur-sm sticky top-0 z-20">
+      <header className="border-b border-[#E4E4E0] bg-white sticky top-0 z-20">
         <div className={`${CONTAINER} py-3 flex items-center justify-between gap-3`}>
           <div className="flex items-center gap-3 min-w-0 shrink-0">
             <Link
@@ -80,14 +80,14 @@ export default async function Home() {
             <nav className="hidden md:flex items-center gap-6 ml-8">
               <a
                 href="#how-it-works"
-                className="text-sm text-[#6B7280] hover:text-[#14171F] transition-colors duration-150 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7791F]"
+                className="text-[15px] font-medium text-[#14171F] px-3 py-1.5 rounded-md underline decoration-2 underline-offset-[6px] decoration-transparent hover:bg-[#F4F4F2] hover:decoration-[#B7791F] transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7791F]"
               >
                 How it works
               </a>
               {user && (
                 <a
                   href="#tracked-products"
-                  className="text-sm text-[#6B7280] hover:text-[#14171F] transition-colors duration-150 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7791F]"
+                  className="text-[15px] font-medium text-[#14171F] px-3 py-1.5 rounded-md underline decoration-2 underline-offset-[6px] decoration-transparent hover:bg-[#F4F4F2] hover:decoration-[#B7791F] transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7791F]"
                 >
                   My products
                 </a>

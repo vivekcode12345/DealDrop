@@ -1,5 +1,5 @@
-import { TrendingDown } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { SITE_NAME } from "@/lib/content";
 
 // lucide-react no longer ships brand icons, so the GitHub mark is inlined.
@@ -22,12 +22,13 @@ export default function Footer() {
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col sm:flex-row items-center sm:items-center sm:justify-between gap-4 text-center sm:text-left">
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 min-w-0">
-            <span className="flex items-center justify-center w-6 h-6 rounded-sm bg-[#B7791F]/10 text-[#8A5A12] border border-[#B7791F]/20 shrink-0">
-              <TrendingDown className="w-3.5 h-3.5 stroke-[2.25]" aria-hidden="true" />
-            </span>
-            <span className="font-sans font-semibold text-sm tracking-tight text-[#14171F]">
-              dealdrop
-            </span>
+            <Image
+              src="/logo-nav.png"
+              width={1003}
+              height={378}
+              alt="dealdrop"
+              className="h-8 w-auto shrink-0 object-contain"
+            />
             <span className="text-xs text-[#6B7280]">
               — Automated product price tracker
             </span>
