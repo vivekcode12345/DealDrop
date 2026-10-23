@@ -69,12 +69,12 @@ export default async function Home() {
               className="group flex items-center gap-1.5 min-w-0 shrink-0 rounded-sm transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FAFAF9]"
             >
               <Image
-                src="/logo.png"
-                width={1219}
-                height={864}
+                src="/logo-nav.png"
+                width={1003}
+                height={378}
                 priority
                 alt="dealdrop"
-                className="h-8 w-auto shrink-0 object-contain"
+                className="h-9 md:h-11 w-auto shrink-0 object-contain"
               />
             </Link>
             <nav className="hidden md:flex items-center gap-6 ml-8">
