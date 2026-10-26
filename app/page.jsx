@@ -3,7 +3,7 @@ import { getProducts } from "./actions";
 import AddProductForm from "@/components/AddProductForm";
 import ProductCard from "@/components/ProductCard";
 import Footer from "@/components/Footer";
-import { Link2, History, Mail } from "lucide-react";
+import { Link2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import AuthButton from "@/components/AuthButton";
@@ -12,13 +12,10 @@ import {
   HERO_BADGE,
   HERO_TITLE,
   HERO_SUBTITLE,
-  FEATURES,
   EMPTY_TITLE,
   EMPTY_TEXT,
 } from "@/lib/content";
-
-// Functional icons aligned with each feature panel.
-const FEATURE_ICONS = [Link2, History, Mail];
+import HowItWorks from "@/components/HowItWorks";
 
 // Reuse the exact same inline GitHub mark the footer uses.
 function GitHubIcon({ className }) {
@@ -211,34 +208,6 @@ export default async function Home() {
               </div>
             </div>
 
-            {/* Features: horizontal row of bordered hairline panels */}
-            {products.length === 0 && (
-              <div id="how-it-works" className="mt-12 pt-10 border-t border-[#E4E4E0] scroll-mt-20">
-                <div className="grid md:grid-cols-3 gap-px bg-[#E4E4E0] border border-[#E4E4E0] rounded-sm overflow-hidden shadow-xs">
-                  {FEATURES.map(({ title, description }, index) => {
-                    const Icon = FEATURE_ICONS[index];
-                    return (
-                      <div
-                        key={title}
-                        className="bg-[#FFFFFF] p-6 flex flex-col justify-between"
-                      >
-                        <div>
-                          <div className="w-8 h-8 rounded-sm bg-[#FAFAF9] border border-[#E4E4E0] flex items-center justify-center mb-4">
-                            {Icon && <Icon className="w-4 h-4 text-[#B7791F]" aria-hidden="true" />}
-                          </div>
-                          <h2 className="text-sm font-medium text-[#14171F] mb-1.5">
-                            {title}
-                          </h2>
-                          <p className="text-xs text-[#6B7280] leading-relaxed">
-                            {description}
-                          </p>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
           </div>
         </section>
 
@@ -278,6 +247,9 @@ export default async function Home() {
             </div>
           </section>
         )}
+
+        {/* How it works — visible for both signed-out and signed-in users */}
+        <HowItWorks />
       </main>
 
       {/* Footer */}
