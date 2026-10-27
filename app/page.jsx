@@ -1,7 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { getProducts } from "./actions";
 import AddProductForm from "@/components/AddProductForm";
-import ProductCard from "@/components/ProductCard";
+import ProductList from "@/components/ProductList";
 import Footer from "@/components/Footer";
 import { Link2 } from "lucide-react";
 import Link from "next/link";
@@ -223,11 +223,7 @@ export default async function Home() {
               </span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 items-stretch">
-              {products.map((product) => (
-                <ProductCard key={product.id} product={product} serverNow={serverNow} />
-              ))}
-            </div>
+            <ProductList products={products} serverNow={serverNow} />
           </section>
         )}
 

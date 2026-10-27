@@ -19,9 +19,11 @@ import { formatMoney } from "@/lib/format";
 
 const COOLDOWN_MS = 5 * 60 * 1000; // 5 minutes
 
-export default function ProductCard({ product, serverNow }) {
+export default function ProductCard({ product, serverNow, isOpen, onToggle }) {
   const router = useRouter();
   const [showChart, setShowChart] = useState(false);
+  const isChartOpen = isOpen ?? showChart;
+  const toggleChart = onToggle ?? (() => setShowChart(!showChart));
   const [deleting, setDeleting] = useState(false);
   const [checking, setChecking] = useState(false);
   // Seeded from the server render timestamp so the first client render matches
@@ -194,18 +196,18 @@ export default function ProductCard({ product, serverNow }) {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setShowChart(!showChart)}
-              aria-expanded={showChart}
+              onClick={toggleChart}
+              aria-expanded={isChartOpen}
               className="h-7 text-xs gap-1 border-[#E4E4E0] bg-[#FAFAF9] text-[#14171F] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors"
             >
               <ChevronDown
                 className={
                   "w-3.5 h-3.5 transition-transform duration-200 " +
-                  (showChart ? "rotate-180" : "")
+                  (isChartOpen ? "rotate-180" : "")
                 }
                 aria-hidden="true"
               />
-              {showChart ? "Hide Chart" : "Price History"}
+              {isChartOpen ? "Hide Chart" : "Price History"}
             </Button>
           </div>
 
@@ -256,7 +258,7 @@ export default function ProductCard({ product, serverNow }) {
         </div>
       </div>
 
-      {showChart && (
+      {isChartOpen && (
         <div className="border-t border-[#E4E4E0] bg-[#FAFAF9]/60 p-4 sm:p-5">
           {/* Reserve the chart's height so expanding the panel does not shift
               the surrounding content. */}
