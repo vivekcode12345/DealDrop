@@ -158,7 +158,21 @@ cp .env.example .env.local
 
 Run the SQL script located at [`supabase/schema.sql`](supabase/schema.sql) in your Supabase SQL Editor. This creates the `products` and `price_history` tables and the 6 Row Level Security policies.
 
-### 5. Enable extensions and schedule the cron job
+### 5. Configure Google sign-in redirects
+
+In **Supabase Dashboard > Authentication > URL Configuration**, set the Site URL
+to your deployed application URL and add these Redirect URLs:
+
+```text
+https://<YOUR_DEPLOYED_URL>/auth/callback
+http://localhost:3000/auth/callback
+```
+
+The application requests `/auth/callback` explicitly. The home page also
+handles an OAuth `code` returned to `/` as a fallback for projects whose Site
+URL is already configured that way.
+
+### 6. Enable extensions and schedule the cron job
 
 In your Supabase project dashboard:
 
@@ -182,7 +196,7 @@ select cron.schedule(
 );
 ```
 
-### 6. Run the local development server
+### 7. Run the local development server
 
 ```bash
 npm run dev
@@ -229,4 +243,3 @@ This project is licensed under the [MIT License](LICENSE).
 <p align="center">
   Made with <span role="img" aria-label="love">❤️</span> by <a href="https://github.com/vivekcode12345">Vivek Verma</a>
 </p>
-

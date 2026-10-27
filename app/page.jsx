@@ -5,6 +5,7 @@ import ProductList from "@/components/ProductList";
 import Footer from "@/components/Footer";
 import { Link2 } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import Image from "next/image";
 import AuthButton from "@/components/AuthButton";
 import {
@@ -43,8 +44,22 @@ function readServerNow() {
   return Date.now();
 }
 
-export default async function Home() {
+export default async function Home({ searchParams }) {
   const supabase = await createClient();
+  const params = await searchParams;
+
+  // Some Supabase projects use the site URL as the OAuth fallback redirect.
+  // Complete that callback here so sign-in still works when the provider
+  // returns to "/" instead of "/auth/callback".
+  if (params?.code) {
+    const { error } = await supabase.auth.exchangeCodeForSession(params.code);
+    redirect(error ? "/auth-error" : "/");
+  }
+
+  if (params?.error) {
+    redirect("/auth-error");
+  }
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
