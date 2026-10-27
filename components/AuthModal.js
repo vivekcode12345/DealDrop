@@ -16,12 +16,17 @@ export default function AuthModal({ isOpen, onClose }) {
   const handleGoogleLogin = async () => {
     const { origin } = window.location;
 
-    await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: `${origin}/auth/callback`,
-      },
-    });
+    try {
+      await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${origin}/auth/callback`,
+        },
+      });
+    } catch (error) {
+      console.error("Google sign-in error:", error);
+      alert("Sign-in failed. Please check the console for details.");
+    }
   };
 
   return (
