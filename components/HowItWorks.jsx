@@ -118,25 +118,25 @@ export default function HowItWorks() {
                           ₹1,139
                         </span>
                         <span className="inline-flex items-center border border-[#E8D9B8] bg-[#FBF5E8] px-2 sm:px-2.5 py-0.5 font-mono text-[11px] text-[#8A5A12]">
-                          Target: ₹1,000
+                          Target: ₹1,200
                         </span>
                       </div>
                       <div className="mt-3 sm:mt-4 flex items-center gap-1.5 text-xs text-[#6B7280]">
                         <span className="h-1.5 w-1.5 rounded-full bg-[#16A34A]" />
                         <span>Tracking daily</span>
                       </div>
-                      <div className="mt-4 sm:mt-5 flex flex-wrap items-center gap-2 border-t border-[#E4E4E0] pt-3 sm:pt-4">
-                        <span className="cursor-not-allowed px-3 sm:px-3.5 py-1.5 text-xs font-medium border border-[#E4E4E0] text-[#14171F]">
-                          Check Now
-                        </span>
-                        <span className="cursor-not-allowed px-3 sm:px-3.5 py-1.5 text-xs font-medium border border-[#E4E4E0] text-[#14171F]">
-                          Price History
-                        </span>
-                        <span className="ml-auto flex h-8 w-8 shrink-0 items-center justify-center border border-[#E4E4E0]">
-                          <Share2 className="h-4 w-4 text-[#6B7280]" aria-hidden="true" />
-                        </span>
-                      </div>
                     </div>
+                  </div>
+                  <div className="mt-4 sm:mt-5 flex flex-wrap items-center gap-2 border-t border-[#E4E4E0] pt-3 sm:pt-4">
+                    <span className="px-3 sm:px-3.5 py-1.5 text-xs font-medium border border-[#E4E4E0] text-[#14171F]">
+                      Check Now
+                    </span>
+                    <span className="px-3 sm:px-3.5 py-1.5 text-xs font-medium border border-[#E4E4E0] text-[#14171F]">
+                      Price History
+                    </span>
+                    <span className="ml-auto flex h-8 w-8 shrink-0 items-center justify-center border border-[#E4E4E0]">
+                      <Share2 className="h-4 w-4 text-[#6B7280]" aria-hidden="true" />
+                    </span>
                   </div>
                 </div>
 
