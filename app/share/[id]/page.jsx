@@ -210,6 +210,7 @@ export default async function SharePage({ params }) {
                 width={128}
                 height={128}
                 loading="lazy"
+                referrerPolicy="no-referrer"
                 decoding="async"
                 className="w-28 h-28 sm:w-32 sm:h-32 object-cover rounded-sm border border-[#E4E4E0] bg-[#FAFAF9] shrink-0"
               />

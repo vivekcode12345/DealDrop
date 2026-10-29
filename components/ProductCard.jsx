@@ -11,6 +11,7 @@ import {
   RefreshCw,
   Loader2,
   Share2,
+  ImageOff,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -26,6 +27,7 @@ export default function ProductCard({ product, serverNow, isOpen, onToggle }) {
   const toggleChart = onToggle ?? (() => setShowChart(!showChart));
   const [deleting, setDeleting] = useState(false);
   const [checking, setChecking] = useState(false);
+  const [imgFailed, setImgFailed] = useState(false);
   // Seeded from the server render timestamp so the first client render matches
   // the server HTML exactly (no hydration mismatch, no layout shift).
   const [now, setNow] = useState(() =>
@@ -115,7 +117,7 @@ export default function ProductCard({ product, serverNow, isOpen, onToggle }) {
     <div className="border border-[#E4E4E0] hover:border-[#D1D1CB] bg-[#FFFFFF] rounded-sm transition-colors shadow-xs flex flex-col justify-between">
       <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
         <div className="flex gap-4 items-start">
-          {product.image_url && (
+          {product.image_url && !imgFailed ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={product.image_url}
@@ -123,9 +125,15 @@ export default function ProductCard({ product, serverNow, isOpen, onToggle }) {
               width={80}
               height={80}
               loading="lazy"
+              referrerPolicy="no-referrer"
               decoding="async"
+              onError={() => setImgFailed(true)}
               className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-sm border border-[#E4E4E0] bg-[#FAFAF9] shrink-0"
             />
+          ) : (
+            <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center rounded-sm border border-[#E4E4E0] bg-[#F4F4F2] shrink-0">
+              <ImageOff className="h-6 w-6 text-[#9CA3AF]" aria-hidden="true" />
+            </div>
           )}
 
           <div className="flex-1 min-w-0">
@@ -162,15 +170,15 @@ export default function ProductCard({ product, serverNow, isOpen, onToggle }) {
         {/* Single-row actions: text actions on the left, icon actions on the
             right. The row wraps on narrow screens so the two groups never
             overlap. */}
-        <div className="flex flex-wrap items-center justify-between gap-2 mt-4 pt-3 border-t border-[#E4E4E0]">
-          <div className="flex flex-wrap items-center gap-2 min-w-0">
+        <div className="flex flex-col gap-2 mt-4 pt-3 border-t border-[#E4E4E0] sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+          <div className="grid grid-cols-2 gap-2 min-w-0 sm:flex sm:items-center">
             <Button
               variant="outline"
               size="sm"
               onClick={handleCheckNow}
               disabled={checking || isCooldown}
               title={isCooldown ? `Checked recently` : "Check latest price now"}
-              className="h-7 text-xs gap-1 min-w-[8rem] justify-center border-[#E4E4E0] bg-[#FAFAF9] text-[#14171F] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors disabled:opacity-60"
+              className="h-7 w-full justify-center text-xs gap-1 min-w-[8rem] border-[#E4E4E0] bg-[#FAFAF9] text-[#14171F] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors disabled:opacity-60 sm:w-auto"
             >
               {checking ? (
                 <>
@@ -198,7 +206,7 @@ export default function ProductCard({ product, serverNow, isOpen, onToggle }) {
               size="sm"
               onClick={toggleChart}
               aria-expanded={isChartOpen}
-              className="h-7 text-xs gap-1 border-[#E4E4E0] bg-[#FAFAF9] text-[#14171F] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors"
+              className="h-7 w-full justify-center text-xs gap-1 border-[#E4E4E0] bg-[#FAFAF9] text-[#14171F] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors sm:w-auto"
             >
               <ChevronDown
                 className={
@@ -211,16 +219,17 @@ export default function ProductCard({ product, serverNow, isOpen, onToggle }) {
             </Button>
           </div>
 
-          <div className="flex items-center gap-1.5 shrink-0 ml-auto">
+          <div className="grid grid-cols-3 gap-2 shrink-0 ml-auto sm:flex sm:items-center">
             <Button
               variant="outline"
               size="sm"
               onClick={handleShare}
               aria-label="Copy share link"
               title="Copy share link"
-              className="h-7 w-7 p-0 border-[#E4E4E0] bg-[#FAFAF9] text-[#14171F] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors"
+              className="h-7 w-full justify-center gap-1.5 p-0 border-[#E4E4E0] bg-[#FAFAF9] text-[#14171F] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors sm:w-8"
             >
               <Share2 className="w-3.5 h-3.5" aria-hidden="true" />
+              <span className="text-xs sm:sr-only">Share</span>
             </Button>
 
             <Button
@@ -228,7 +237,7 @@ export default function ProductCard({ product, serverNow, isOpen, onToggle }) {
               size="sm"
               aria-label="Open product page"
               title="Open product page"
-              className="h-7 w-7 p-0 border-[#E4E4E0] bg-[#FAFAF9] text-[#14171F] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors"
+              className="h-7 w-full justify-center gap-1.5 p-0 border-[#E4E4E0] bg-[#FAFAF9] text-[#14171F] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors sm:w-8"
               nativeButton={false}
               render={
                 <Link
@@ -241,6 +250,7 @@ export default function ProductCard({ product, serverNow, isOpen, onToggle }) {
               }
             >
               <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
+              <span className="text-xs sm:sr-only">Open</span>
             </Button>
 
             <Button
@@ -250,9 +260,10 @@ export default function ProductCard({ product, serverNow, isOpen, onToggle }) {
               disabled={deleting}
               aria-label="Remove product"
               title="Remove product"
-              className="h-7 w-7 p-0 text-red-600 hover:text-red-700 hover:bg-red-50 focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 rounded-md font-sans transition-colors"
+              className="h-7 w-full justify-center gap-1.5 p-0 text-red-600 hover:text-red-700 hover:bg-red-50 focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 rounded-md font-sans transition-colors sm:w-8"
             >
               <Trash2 className="w-3.5 h-3.5" aria-hidden="true" />
+              <span className="text-xs sm:sr-only">Remove</span>
             </Button>
           </div>
         </div>
