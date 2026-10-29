@@ -219,7 +219,7 @@ export default function ProductCard({ product, serverNow, isOpen, onToggle }) {
             </Button>
           </div>
 
-          <div className="grid grid-cols-3 gap-2 shrink-0 ml-auto sm:flex sm:items-center">
+          <div className="grid grid-cols-3 gap-2 shrink-0 sm:ml-auto sm:flex sm:items-center">
             <Button
               variant="outline"
               size="sm"
