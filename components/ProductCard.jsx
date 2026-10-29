@@ -114,7 +114,7 @@ export default function ProductCard({ product, serverNow, isOpen, onToggle }) {
     !Number.isNaN(parseFloat(product.target_price));
 
   return (
-    <div className="border border-[#E4E4E0] hover:border-[#D1D1CB] bg-[#FFFFFF] rounded-sm transition-colors shadow-xs flex flex-col justify-between">
+    <div className="border border-[#E4E4E0] hover:border-[#D6C19A] bg-[#FFFFFF] rounded-lg transition-all duration-200 shadow-xs hover:shadow-md flex flex-col justify-between overflow-hidden">
       <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
         <div className="flex gap-4 items-start">
           {product.image_url && !imgFailed ? (
@@ -128,10 +128,10 @@ export default function ProductCard({ product, serverNow, isOpen, onToggle }) {
               referrerPolicy="no-referrer"
               decoding="async"
               onError={() => setImgFailed(true)}
-              className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-sm border border-[#E4E4E0] bg-[#FAFAF9] shrink-0"
+              className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-md border border-[#E4E4E0] bg-[#FAFAF9] shrink-0"
             />
           ) : (
-            <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center rounded-sm border border-[#E4E4E0] bg-[#F4F4F2] shrink-0">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center rounded-md border border-[#E4E4E0] bg-[#F4F4F2] shrink-0">
               <ImageOff className="h-6 w-6 text-[#9CA3AF]" aria-hidden="true" />
             </div>
           )}
@@ -139,20 +139,20 @@ export default function ProductCard({ product, serverNow, isOpen, onToggle }) {
           <div className="flex-1 min-w-0">
             <h3
               title={product.name}
-              className="font-medium text-sm text-[#14171F] line-clamp-2 h-10 mb-2 leading-snug cursor-default"
+              className="font-semibold text-sm text-[#14171F] line-clamp-2 h-10 mb-2 leading-snug cursor-default"
             >
               {product.name}
             </h3>
 
             {/* Price on its own line */}
-            <div className="font-mono text-2xl font-bold text-[#B7791F] tabular-nums leading-tight">
+            <div className="font-mono text-2xl font-bold text-[#B7791F] tabular-nums leading-tight tracking-tight">
               {formatMoney(product.current_price, product.currency)}
             </div>
 
             {/* One wrapping row of small badges */}
             <div className="flex flex-wrap items-center gap-2 mt-2">
               {hasTargetPrice && (
-                <span className="inline-flex items-center text-[11px] font-mono text-accent-text border border-[#B7791F]/30 bg-[#B7791F]/10 px-2 py-0.5 rounded-sm font-medium">
+                <span className="inline-flex items-center text-[11px] font-mono text-accent-text border border-[#B7791F]/30 bg-[#FBF5E8] px-2 py-0.5 rounded-sm font-medium">
                   Target: {formatMoney(product.target_price, product.currency)}
                 </span>
               )}
@@ -170,7 +170,7 @@ export default function ProductCard({ product, serverNow, isOpen, onToggle }) {
         {/* Single-row actions: text actions on the left, icon actions on the
             right. The row wraps on narrow screens so the two groups never
             overlap. */}
-        <div className="flex flex-col gap-2 mt-4 pt-3 border-t border-[#E4E4E0] sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-2 mt-5 pt-4 border-t border-[#E4E4E0] sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
           <div className="grid grid-cols-2 gap-2 min-w-0 sm:flex sm:items-center">
             <Button
               variant="outline"
@@ -178,7 +178,7 @@ export default function ProductCard({ product, serverNow, isOpen, onToggle }) {
               onClick={handleCheckNow}
               disabled={checking || isCooldown}
               title={isCooldown ? `Checked recently` : "Check latest price now"}
-              className="h-7 w-full justify-center text-xs gap-1 min-w-[8rem] border-[#E4E4E0] bg-[#FAFAF9] text-[#14171F] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors disabled:opacity-60 sm:w-auto"
+              className="h-8 w-full justify-center text-xs gap-1 min-w-[8rem] border-[#D6C19A] bg-[#FBF5E8] text-[#8A5A12] hover:bg-[#F6EEDC] hover:border-[#B7791F] hover:text-[#6F470C] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors disabled:opacity-60 sm:w-auto"
             >
               {checking ? (
                 <>
@@ -206,7 +206,7 @@ export default function ProductCard({ product, serverNow, isOpen, onToggle }) {
               size="sm"
               onClick={toggleChart}
               aria-expanded={isChartOpen}
-              className="h-7 w-full justify-center text-xs gap-1 border-[#E4E4E0] bg-[#FAFAF9] text-[#14171F] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors sm:w-auto"
+              className="h-8 w-full justify-center text-xs gap-1 border-[#E4E4E0] bg-white text-[#14171F] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors sm:w-auto"
             >
               <ChevronDown
                 className={
@@ -226,7 +226,7 @@ export default function ProductCard({ product, serverNow, isOpen, onToggle }) {
               onClick={handleShare}
               aria-label="Copy share link"
               title="Copy share link"
-              className="h-7 w-full justify-center gap-1.5 p-0 border-[#E4E4E0] bg-[#FAFAF9] text-[#14171F] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors sm:w-8"
+              className="h-8 w-full justify-center gap-1.5 p-0 border-[#E4E4E0] bg-white text-[#6B7280] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors sm:w-8"
             >
               <Share2 className="w-3.5 h-3.5" aria-hidden="true" />
               <span className="text-xs sm:sr-only">Share</span>
@@ -237,7 +237,7 @@ export default function ProductCard({ product, serverNow, isOpen, onToggle }) {
               size="sm"
               aria-label="Open product page"
               title="Open product page"
-              className="h-7 w-full justify-center gap-1.5 p-0 border-[#E4E4E0] bg-[#FAFAF9] text-[#14171F] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors sm:w-8"
+              className="h-8 w-full justify-center gap-1.5 p-0 border-[#E4E4E0] bg-white text-[#6B7280] hover:bg-[#F4F4F2] hover:border-[#D1D1CB] hover:text-[#14171F] focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 focus-visible:border-[#B7791F] rounded-md font-sans transition-colors sm:w-8"
               nativeButton={false}
               render={
                 <Link
@@ -260,7 +260,7 @@ export default function ProductCard({ product, serverNow, isOpen, onToggle }) {
               disabled={deleting}
               aria-label="Remove product"
               title="Remove product"
-              className="h-7 w-full justify-center gap-1.5 p-0 text-red-600 hover:text-red-700 hover:bg-red-50 focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 rounded-md font-sans transition-colors sm:w-8"
+              className="h-8 w-full justify-center gap-1.5 p-0 text-red-600 hover:text-red-700 hover:bg-red-50 focus-visible:ring-2 focus-visible:ring-[#B7791F] focus-visible:ring-offset-1 rounded-md font-sans transition-colors sm:w-8"
             >
               <Trash2 className="w-3.5 h-3.5" aria-hidden="true" />
               <span className="text-xs sm:sr-only">Remove</span>
