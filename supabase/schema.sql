@@ -81,8 +81,8 @@ create extension if not exists pg_net;
 --       'Authorization', 'Bearer <YOUR_CRON_SECRET>',
 --       'Content-Type', 'application/json'
 --     ),
---     body := '{}'::jsonb
+--     body := '{}'::jsonb,
+--     timeout_milliseconds := 60000
 --   ) as request_id;
 --   $$
 -- );
-
