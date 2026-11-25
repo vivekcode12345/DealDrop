@@ -247,6 +247,16 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+### Run with Docker
+
+Copy `.env.example` to `.env` and set `NEXT_PUBLIC_APP_URL=http://localhost:3000` for local use. Then build and start:
+
+```bash
+docker compose up --build
+```
+
+Open [http://localhost:3000](http://localhost:3000). The Supabase Auth redirect URL must include `http://localhost:3000/auth/callback`, the Supabase cron job must point at your deployed URL, and server secrets (`SUPABASE_SERVICE_ROLE_KEY`, `FIRECRAWL_API_KEY`, `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `CRON_SECRET`) are runtime-only — they are never baked into the image.
+
 </details>
 
 <details>
